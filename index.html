@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DHT11 Live Data</title>
+  <style>
+    body { font-family: Arial; text-align: center; background: #f2f2f2; }
+    .card { background: white; padding: 20px; margin: 50px auto; width: 300px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    h1 { color: #333; }
+    p { font-size: 20px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🌡 DHT11 Sensor</h1>
+    <p id="temp">Loading...</p>
+    <p id="hum">Loading...</p>
+  </div>
+
+  <script>
+    const channelID = "YOUR_CHANNEL_ID";
+    const readAPIKey = "YOUR_READ_API_KEY";
+
+    async function fetchData() {
+      const url = `https://api.thingspeak.com/channels/${channelID}/feeds/last.json?api_key=${readAPIKey}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      document.getElementById('temp').textContent = `Temperature: ${data.field1} °C`;
+      document.getElementById('hum').textContent = `Humidity: ${data.field2} %`;
+    }
+
+    setInterval(fetchData, 5000);
+    fetchData();
+  </script>
+</body>
+</html>
